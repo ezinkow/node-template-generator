@@ -9,14 +9,166 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { throwError } = require("rxjs")
+const employeeArr = []
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function questions (){
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "What is your name?",
+            name: "Name",
+        },
+        {
+            type: "input",
+            message: "What is your email?",
+            name: "Email",
+        },
+        {
+            type: "input",
+            message: "What is your employee ID?",
+            name: "ID",
+        },
+        {
+            type: "list",
+            message: "What is your title?",
+            name: "title",
+            choices: [
+                "Manager",
+                "Engineer",
+                "Intern"
+            ],
+        }
+    ])
+        .then(conditional())
+}
+
+questions()
+
+function manager() {
+    const promptArr = [
+        {
+            type: "input",
+            message: "What is your office number?",
+            name: "officeNumber",
+        }
+    ]
+    return inquirer.prompt(promptArr)
+}
+
+function engineer() {
+    const promptArr = [
+         {
+            type: "input",
+            message: "What is your gitbub username?",
+            name: "github",
+        },
+    ]
+    return inquirer.prompt(promptArr)
+}
+
+function intern() {
+    const promptArr = [
+         {
+            type: "input",
+            message: "What school do you attend?",
+            name: "school",
+        },
+    ]
+    return inquirer.prompt(promptArr)
+}
+
+function printTeam() {
+    const promptArr = [
+        {
+            type: "list",
+            message: "Create team now?",
+            name: "printTeam",
+            choices: [
+                "yes",
+                "No",
+            ]
+        }
+    ]
+    return inquirer.prompt(promptArr)
+}
+
+function conditional(input) {
+    if (input.role === "Manager") {
+        manager().then(function (response) {
+            input.officeNumber = response.officeNumber
+            const manager = new Manager(input.name,input.id,input.email,input.officeNumber)
+            employeeArr.push(manager)
+
+            printTeam().then(function(answer){
+                if(answer.team === "yes"){
+                    const htmlPage = render(employeeArr)
+                    fs.writeFile(outputPath,htmlPage,function(err){
+                        if(err){
+                            throw err
+                        }
+                        console.log("Team page made!")
+                    })
+                }
+                else {
+                    questions()
+                }
+            })
+        })
+    }
+        else if (input.role === "Engineer") {
+            engineer().then(function (response) {
+            input.github = response.github
+            const engineer = new Engineer(input.name,input.id,input.email,input.github)
+            employeeArr.push(engineer)
+
+            printTeam().then(function(answer){
+                if(answer.team === "yes"){
+                    const htmlPage = render(employeeArr)
+                    fs.writeFile(outputPath,htmlPage,function(err){
+                        if(err){
+                            throw err
+                        }
+                        console.log("Team page made!")
+                    })
+                }
+                else {
+                    questions()
+                }
+            })
+        })
+        }
+        else if (input.role === "Intern") {
+            intern().then(function (response) {
+            input.school = response.school
+            const intern = new Intern(input.name,input.id,input.email,input.school)
+            employeeArr.push(intern)
+
+            printTeam().then(function(answer){
+                if(answer.team === "yes"){
+                    const htmlPage = render(employeeArr)
+                    fs.writeFile(outputPath,htmlPage,function(err){
+                        if(err){
+                            throw err
+                        }
+                        console.log("Team page made!")
+                    })
+                }
+                else {
+                    questions()
+                }
+            })
+        })
+        }
+}
 
 // After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+// above) and pass in an array containing all employee objects; the `render` function will generate and return a block of HTML including templated divs for each employee!
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the

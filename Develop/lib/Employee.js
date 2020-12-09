@@ -6,28 +6,20 @@ class Employee {
         this.email = email
     }
 
-    printInfo() {
-        console.log("this",this)
-    for (const key in this) {
-      console.log(`${key}: ${this[key]}`);
-    }
-    console.log(`
-        Name: ${this.name}
-        Position: ${this.id}
-    `);
+    getName() {
+        return this.name
     }
 
-    getName() {
-        console.log(this.name)
+    getId() {
+        return this.id
     }
-    getID() {
-        console.log(this.id)
-    }
+
     getEmail() {
-        console.log(this.email)
+        return this.email
     }
+
     getRole() {
-        console.log("Employee")
+        return "Employee"
     }
 }
 

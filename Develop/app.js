@@ -21,17 +21,17 @@ function questions (){
         {
             type: "input",
             message: "What is your name?",
-            name: "Name",
+            name: "name",
         },
         {
             type: "input",
             message: "What is your email?",
-            name: "Email",
+            name: "email",
         },
         {
             type: "input",
             message: "What is your employee ID?",
-            name: "ID",
+            name: "id",
         },
         {
             type: "list",
@@ -89,7 +89,7 @@ function printTeam() {
             message: "Create team now?",
             name: "printTeam",
             choices: [
-                "yes",
+                "Yes",
                 "No",
             ]
         }
@@ -98,15 +98,15 @@ function printTeam() {
 }
 
 function conditional(input) {
-    if (input.role === "Manager") {
+    if (input.title === "Manager") {
         manager().then(function (response) {
             input.officeNumber = response.officeNumber
-            const manager = new Manager(input.name,input.id,input.email,input.officeNumber)
+            let manager = new Manager(input.name,input.id,input.email,input.officeNumber)
             employeeArr.push(manager)
 
             printTeam().then(function(answer){
-                if(answer.team === "yes"){
-                    const htmlPage = render(employeeArr)
+                if(answer.printTeam === "Yes"){
+                    let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){
                             throw err
@@ -120,15 +120,15 @@ function conditional(input) {
             })
         })
     }
-        else if (input.role === "Engineer") {
+        else if (input.title === "Engineer") {
             engineer().then(function (response) {
             input.github = response.github
-            const engineer = new Engineer(input.name,input.id,input.email,input.github)
+            let engineer = new Engineer(input.name,input.id,input.email,input.github)
             employeeArr.push(engineer)
 
             printTeam().then(function(answer){
-                if(answer.team === "yes"){
-                    const htmlPage = render(employeeArr)
+                if(answer.printTeam === "Yes"){
+                    let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){
                             throw err
@@ -142,15 +142,15 @@ function conditional(input) {
             })
         })
         }
-        else if (input.role === "Intern") {
+        else if (userInput.title === "Intern") {
             intern().then(function (response) {
             input.school = response.school
-            const intern = new Intern(input.name,input.id,input.email,input.school)
+            let intern = new Intern(input.name,input.id,input.email,input.school)
             employeeArr.push(intern)
 
             printTeam().then(function(answer){
-                if(answer.team === "yes"){
-                    const htmlPage = render(employeeArr)
+                if(answer.printTeam === "Yes"){
+                    let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){
                             throw err

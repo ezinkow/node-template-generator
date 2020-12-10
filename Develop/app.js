@@ -9,7 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-const { throwError } = require("rxjs")
+// const { throwError } = require("rxjs")
 const employeeArr = []
 
 
@@ -40,11 +40,11 @@ function questions (){
             choices: [
                 "Manager",
                 "Engineer",
-                "Intern"
+                "Intern",
             ],
         }
     ])
-        .then(conditional())
+        .then(conditional)
 }
 
 questions()
@@ -86,11 +86,11 @@ function printTeam() {
     const promptArr = [
         {
             type: "list",
-            message: "Create team now?",
+            message: "Create team now or add more team members?",
             name: "printTeam",
             choices: [
-                "Yes",
-                "No",
+                "Create team",
+                "Add more team members",
             ]
         }
     ]
@@ -105,7 +105,7 @@ function conditional(input) {
             employeeArr.push(manager)
 
             printTeam().then(function(answer){
-                if(answer.printTeam === "Yes"){
+                if(answer.printTeam === "Create team"){
                     let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){
@@ -127,7 +127,7 @@ function conditional(input) {
             employeeArr.push(engineer)
 
             printTeam().then(function(answer){
-                if(answer.printTeam === "Yes"){
+                if(answer.printTeam === "Create team"){
                     let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){
@@ -142,14 +142,14 @@ function conditional(input) {
             })
         })
         }
-        else if (userInput.title === "Intern") {
+        else if (input.title === "Intern") {
             intern().then(function (response) {
             input.school = response.school
             let intern = new Intern(input.name,input.id,input.email,input.school)
             employeeArr.push(intern)
 
             printTeam().then(function(answer){
-                if(answer.printTeam === "Yes"){
+                if(answer.printTeam === "Create team"){
                     let htmlPage = render(employeeArr)
                     fs.writeFile(outputPath,htmlPage,function(err){
                         if(err){

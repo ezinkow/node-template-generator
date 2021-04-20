@@ -8,7 +8,7 @@ https://youtu.be/yXSzgtb3Dl0
 
 ## About This Project:
 
-This was a homework assignment as part of the Northwestern Coding Bootcamp to build a team template generator that outputs team member profile cards based on answers given to questions in the command line.
+This is a team template generator that outputs team member profile cards based on answers given to questions in the command line.
 
 This was built with HTML, Javascript, Inquirer, and fs 
 
